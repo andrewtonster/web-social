@@ -14,13 +14,13 @@
     z-index: 999;
     top: 0;
     .left {
+      display: flex;
+      align-items: center;
+      gap: 30px;
       @include mobile {
         width: 100%;
         justify-content: space-evenly;
       }
-      display: flex;
-      align-items: center;
-      gap: 30px;
       span {
         font-weight: bold;
         font-size: 20px;

@@ -1,6 +1,36 @@
 import "./register.scss";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
+
+const host = import.meta.env.VITE_HOST;
+
 const Register = () => {
+  const [inputs, setInputs] = useState({
+    username: "",
+    email: "",
+    password: "",
+    name: "",
+  });
+
+  // destructoring, getting all the sam previous values, but only the target
+  const handleChange = (e) => {
+    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  // goign to prevent default so no refresh
+  const handleClick = async (e) => {
+    e.preventDefault();
+
+    try {
+      // emit a post requiest
+
+      await axios.post(`${host}/api/auth/register`, inputs);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="register">
       <div className="card">
@@ -20,11 +50,31 @@ const Register = () => {
         <div className="right">
           <h1>Register</h1>
           <form>
-            <input type="text" placeholder="Username" />
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <input type="text" placeholder="Name" />
-            <button>Register</button>
+            <input
+              type="text"
+              placeholder="Username"
+              name="username"
+              onChange={handleChange}
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              name="email"
+              onChange={handleChange}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              placeholder="Name"
+              name="name"
+              onChange={handleChange}
+            />
+            <button onClick={handleClick}>Register</button>
           </form>
         </div>
       </div>
