@@ -6,6 +6,7 @@ import axios from "axios";
 const host = import.meta.env.VITE_HOST;
 
 const Register = () => {
+  const [err, setErr] = useState(null);
   const [inputs, setInputs] = useState({
     username: "",
     email: "",
@@ -24,10 +25,9 @@ const Register = () => {
 
     try {
       // emit a post requiest
-
       await axios.post(`${host}/api/auth/register`, inputs);
     } catch (err) {
-      console.log(err);
+      setErr(err.response.data);
     }
   };
 
@@ -74,6 +74,7 @@ const Register = () => {
               name="name"
               onChange={handleChange}
             />
+            {err && err}
             <button onClick={handleClick}>Register</button>
           </form>
         </div>

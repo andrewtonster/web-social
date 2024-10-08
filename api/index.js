@@ -6,9 +6,19 @@ import likeRoutes from "./routes/likes.js";
 import commentRoutes from "./routes/comments.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-
+import "dotenv/config";
 const app = express();
-app.use(cors());
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  next();
+});
+
+app.use(
+  cors({
+    origin: process.env.CLIENT,
+  })
+);
 app.use(cookieParser());
 
 // middlewares

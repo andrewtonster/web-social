@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import axios from "axios";
 
 // create context to be used in nexted children
 export const AuthContext = createContext();
@@ -6,17 +7,20 @@ export const AuthContext = createContext();
 // wrap this provider around children and define
 // basically defining a state and toggle function
 // that all the providers children can use
+
+const host = import.meta.env.VITE_HOST;
+
 export const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user")) || null
   );
 
-  const login = () => {
-    setCurrentUser({
-      id: 1,
-      name: "Andrew Doe",
-      profilePic: "https://i.imgur.com/UMnOBer.png",
+  const login = async (inputs) => {
+    const res = await axios.post(`${host}/api/auth/login`, inputs, {
+      withCredentials: true,
     });
+
+    setCurrentUser(res.data);
   };
 
   useEffect(() => {
