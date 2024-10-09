@@ -1,29 +1,25 @@
 import React from "react";
 import "./posts.scss";
 import Post from "../post/post";
+import { makeRequest } from "../../axios";
+import { useQuery } from "@tanstack/react-query";
+
 const Posts = () => {
-  const posts = [
-    {
-      id: 1,
-      name: "Timmothy",
-      userId: 1,
-      profilePic: "https://i.imgur.com/T4rbGAe.png",
-      desc: "lorem fdasnjkfdanfjkasd",
-      img: "https://i.imgur.com/T4rbGAe.png",
-    },
-    {
-      id: 2,
-      name: "Bobby",
-      userId: 1,
-      profilePic: "https://i.imgur.com/T4rbGAe.png",
-      desc: "lorem I am bobby",
-    },
-  ];
+  // we are requesting the data for others post
+  // and then returning data
+  const { isLoading, isError, data, error } = useQuery({
+    queryKey: ["repoData"],
+    queryFn: () => makeRequest.get("/posts").then((res) => res.data),
+  });
+
+  console.log(data);
   return (
     <div className="posts">
-      {posts.map((post) => {
-        return <Post post={post} key={post.id} />;
-      })}
+      {isError
+        ? "Something went wrong"
+        : isLoading
+        ? "Loading..."
+        : data.map((post) => <Post post={post} key={post.id} />)}
     </div>
   );
 };
