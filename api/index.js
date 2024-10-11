@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth.js";
 import likeRoutes from "./routes/likes.js";
 import commentRoutes from "./routes/comments.js";
 import cors from "cors";
+import multer from "multer";
 import cookieParser from "cookie-parser";
 import "dotenv/config";
 const app = express();
@@ -22,6 +23,23 @@ app.use(
 app.use(cookieParser());
 
 // middlewares
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "../client/public/upload");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + file.fieldname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+app.post("/api/upload", upload.single("file"), (req, res) => {
+  console.log("in upload");
+  const file = req.file;
+  res.status(200).json(file.filename);
+});
 
 app.use(express.json());
 app.use("/api/users", userRoutes);
