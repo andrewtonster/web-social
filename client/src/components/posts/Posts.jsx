@@ -8,7 +8,7 @@ const Posts = () => {
   // we are requesting the data for others post
   // and then returning data
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["repoData"],
+    queryKey: ["posts"],
     queryFn: () => makeRequest.get("/posts").then((res) => res.data),
   });
 

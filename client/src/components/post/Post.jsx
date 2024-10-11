@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
@@ -7,11 +7,13 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Link } from "react-router-dom";
 import "./post.scss";
 import Comments from "../comments/Comments";
+import moment from "moment";
+
 const Post = ({ post }) => {
   const [commentOpen, setCommmentOpen] = useState(false);
 
-  console.log(commentOpen);
   const liked = true;
+
   return (
     <div className="post">
       <div className="container">
@@ -25,14 +27,18 @@ const Post = ({ post }) => {
               >
                 <span className="name">{post.name}</span>
               </Link>
-              <span className="date">1 min ago</span>
+              <span className="date">{moment(post.createdAt).fromNow()}</span>
             </div>
           </div>
           <MoreHorizIcon />
         </div>
         <div className="content">
-          <p>{post.desc}</p>
-          <img src={post.img} />
+          <p>
+            {post.desc}
+
+            {post.img}
+          </p>
+          {post.img && <img src={`./upload/${post.img}`} alt="" />}
         </div>
         <div className="info">
           <div className="item">
@@ -49,7 +55,7 @@ const Post = ({ post }) => {
           </div>
         </div>
 
-        {commentOpen && <Comments />}
+        {commentOpen && <Comments postId={post.id} />}
       </div>
     </div>
   );
