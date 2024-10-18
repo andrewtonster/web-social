@@ -43,6 +43,16 @@ const Post = ({ post }) => {
   const handleLike = () => {
     mutation.mutate(data.includes(currentUser.id));
   };
+
+  const [showElement, setShowElement] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowElement(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
   return (
     <div className="post">
       <div className="container">
@@ -67,7 +77,7 @@ const Post = ({ post }) => {
 
             {post.img}
           </p>
-          {post.img && <img src={`./upload/${post.img}`} alt="" />}
+          {showElement && <img src={`./upload/${post.img}`} alt="" />}
         </div>
         <div className="info">
           <div className="item">
